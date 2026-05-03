@@ -54,6 +54,35 @@ long get_total_memory(){
     return mem_kb * 1024;
 }
 
+
+double get_sys_mem_percent() {
+    FILE *fp = fopen("/proc/meminfo", "r");
+    if (!fp) return 0.0;
+
+    char line[256];
+    long total_mem = 0;
+    long available_mem = 0;
+    int found_total = 0, found_avail = 0;
+
+    while (fgets(line, sizeof(line), fp)) {
+        if (strncmp(line, "MemTotal:", 9) == 0) {
+            sscanf(line, "MemTotal: %ld kB", &total_mem);
+            found_total = 1;
+        } else if (strncmp(line, "MemAvailable:", 13) == 0) {
+            sscanf(line, "MemAvailable: %ld kB", &available_mem);
+            found_avail = 1;
+        }
+        
+        if (found_total && found_avail) break;
+    }
+    fclose(fp);
+
+    if (total_mem > 0 && found_avail) {
+        return ((double)(total_mem - available_mem) / total_mem) * 100.0;
+    }
+    return 0.0;
+}
+
 int get_processes(Process *processes) {
     DIR *dir = opendir("/proc");
     if (!dir) return 0;

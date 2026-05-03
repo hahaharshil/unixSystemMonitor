@@ -24,6 +24,7 @@ void getStats(cpuStats *s);
 int get_processes(Process *processes);
 long long get_total_cpu();
 long get_total_memory();
+double get_sys_mem_percent();
 
 #endif
 

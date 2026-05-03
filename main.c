@@ -103,7 +103,10 @@ while(1) {
     
     qsort(processes, count, sizeof(Process), compare_cpu);
 
-    draw_ui(processes, count, cpu_usage);
+
+    double mem_usage = get_sys_mem_percent();
+
+    draw_ui(processes, count, cpu_usage, mem_usage);
 
     for (int i = 0; i < count; i++) {
         prev_processes[i] = processes[i];
