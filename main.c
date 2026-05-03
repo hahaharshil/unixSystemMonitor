@@ -27,7 +27,13 @@ int main(){
     
     long long prev_total_cpu = get_total_cpu();
 
+    cpuStats prev_stats;
+    getStats(&prev_stats);
+
+
     init_ui();
+
+
 
 while(1) {
 
@@ -69,9 +75,35 @@ while(1) {
 
         processes[i].cpu_percent = cpu_percent;
     }
+
+    cpuStats curr_stats;
+    getStats(&curr_stats);
+
+    long long prev_total =
+        prev_stats.user + prev_stats.nice + prev_stats.system +
+        prev_stats.idle + prev_stats.iowait +
+        prev_stats.irq + prev_stats.softirq;
+
+    long long curr_total =
+        curr_stats.user + curr_stats.nice + curr_stats.system +
+        curr_stats.idle + curr_stats.iowait +
+        curr_stats.irq + curr_stats.softirq;
+
+    long long total_diff_sys = curr_total - prev_total;
+    long long idle_diff = curr_stats.idle - prev_stats.idle;
+
+    double cpu_usage = 0;
+
+    if (total_diff_sys > 0) {
+        cpu_usage = (double)(total_diff_sys - idle_diff) / total_diff_sys * 100.0;
+    }
+
+    prev_stats = curr_stats;
+
+    
     qsort(processes, count, sizeof(Process), compare_cpu);
 
-    draw_ui(processes, count);
+    draw_ui(processes, count, cpu_usage);
 
     for (int i = 0; i < count; i++) {
         prev_processes[i] = processes[i];

@@ -8,13 +8,16 @@ void init_ui() {
     nodelay(stdscr, TRUE);
 }
 
-void draw_ui(Process *processes, int count) {
+void draw_ui(Process *processes, int count, double cpu_usage) {
     clear();
 
-    mvprintw(0, 0, "Top Processes (CPU)");
-    mvprintw(1, 0, "PID     NAME            CPU%%     MEM(B)");
+    // 🔥 SYSTEM CPU
+    mvprintw(0, 0, "CPU Usage: %.2f%%", cpu_usage);
 
-    int row = 2;
+    mvprintw(1, 0, "--------------------------------------");
+    mvprintw(2, 0, "PID     NAME            CPU%%     MEM(B)");
+
+    int row = 3;
 
     for (int i = 0; i < 10 && i < count; i++) {
         mvprintw(row++, 0,
