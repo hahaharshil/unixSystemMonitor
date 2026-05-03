@@ -63,7 +63,7 @@ int get_processes(Process *processes) {
 
     while ((entry = readdir(dir)) != NULL) {
 
-        // skip non-numeric names
+        // only number
         if (!is_number(entry->d_name)) continue;
 
         int pid = atoi(entry->d_name);
@@ -82,7 +82,6 @@ int get_processes(Process *processes) {
 
         char name[256];
 
-        // 👇 THIS LINE IS THE KEY
         fscanf(fp, "%d (%[^)])", &pid, name);
 
         for(int i = 0; i < 11; i++){
