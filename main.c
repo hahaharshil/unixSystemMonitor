@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include "proc.h"
 #include <stdlib.h>
+#include "ui.h"
 
 #define MAX_PROCESSES 1024
 
@@ -25,6 +26,9 @@ int main(){
     Process processes[MAX_PROCESSES];
     
     long long prev_total_cpu = get_total_cpu();
+
+    init_ui();
+
 while(1) {
 
     long long total_cpu = get_total_cpu();
@@ -67,13 +71,7 @@ while(1) {
     }
     qsort(processes, count, sizeof(Process), compare_cpu);
 
-    for (int i = 0; i < 10 && i < count; i++) {
-        printf("PID: %d | %s | CPU: %.2f%% | MEM: %ld\n",
-               processes[i].pid,
-               processes[i].name,
-               processes[i].cpu_percent,
-               processes[i].memory);
-    }
+    draw_ui(processes, count);
 
     for (int i = 0; i < count; i++) {
         prev_processes[i] = processes[i];
@@ -84,6 +82,9 @@ while(1) {
 
     sleep(1);
 }
+
+    cleanup_ui();
+
     return 0;
 }
 
