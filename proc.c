@@ -92,7 +92,6 @@ int get_processes(Process *processes) {
 
     while ((entry = readdir(dir)) != NULL) {
 
-        // only number
         if (!is_number(entry->d_name)) continue;
 
         int pid = atoi(entry->d_name);
@@ -124,7 +123,6 @@ int get_processes(Process *processes) {
         strcpy(p.name, name);
         p.cpu_time = utime + stime;
 
-        // ---- memory ----
         sprintf(path, "/proc/%d/statm", pid);
         fp = fopen(path, "r");
         if (!fp) continue;
