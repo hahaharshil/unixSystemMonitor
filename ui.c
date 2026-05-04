@@ -31,7 +31,7 @@ void draw_ui(Process *processes, int count, double cpu_usage, double mem_usage) 
     int row = 3;
 
     for (int i = 0; i < 10 && i < count; i++) {
-        if (processes[i].cpu_percent > 7.0) {
+        if (processes[i].cpu_percent > 10.0) {
             attron(COLOR_PAIR(3));
         }
         
@@ -42,7 +42,7 @@ void draw_ui(Process *processes, int count, double cpu_usage, double mem_usage) 
             processes[i].cpu_percent,
             processes[i].memory);
             
-        if (processes[i].cpu_percent > 7.0) {
+        if (processes[i].cpu_percent > 10.0) {
             attroff(COLOR_PAIR(3));
         }
     }
