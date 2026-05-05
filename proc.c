@@ -15,6 +15,7 @@ typedef struct  {
 */
 
 
+
 int is_number(char *str) {
     for (int i = 0; str[i]; i++) {
         if (!isdigit(str[i])) return 0;
@@ -27,8 +28,8 @@ int is_number(char *str) {
 
 void getStats(cpuStats *s){
     FILE *fp = fopen("/proc/stat", "r");
-    
-    fscanf(fp, "cpu %lld %lld %lld %lld %lld %lld %lld", 
+
+    fscanf(fp, "cpu %lld %lld %lld %lld %lld %lld %lld",
            &s->user, &s->nice, &s->system, &s->idle, &s->iowait, &s->irq, &s->softirq);
     fclose(fp);
 }
@@ -44,7 +45,7 @@ long get_total_memory(){
     FILE *fp = fopen("/proc/meminfo", "r");
     if(!fp)
         return 0;
-    
+
     long mem_kb;
 
     fscanf(fp, "MemTotal: %ld kB", &mem_kb);
@@ -72,7 +73,7 @@ double get_sys_mem_percent() {
             sscanf(line, "MemAvailable: %ld kB", &available_mem);
             found_avail = 1;
         }
-        
+
         if (found_total && found_avail) break;
     }
     fclose(fp);
@@ -139,5 +140,3 @@ int get_processes(Process *processes) {
     closedir(dir);
     return count;
 }
-
-    
